@@ -19,6 +19,7 @@ const dirDev = "public/assets/img/**/*";
 const dirProd = "build/assets/img/";
 const dirDevCss = ['public/vendor/bootstrap/css/bootstrap.css','public/css/heroic-features.css',];
 const dirProdCss = "build/assets/css";
+const scssFiles = './src/scss/style.scss';
 
 
 
@@ -28,6 +29,11 @@ TASKS
 ========================
 */
 
+gulp.task( 'img-min', function() {
+    return gulp.src( dirDev )
+        .pipe(imagemin())
+        .pipe(gulp.dest(dirProd));
+} );
 gulp.task('browserSync', function() {
     browserSync.init({
         server: {
@@ -36,10 +42,11 @@ gulp.task('browserSync', function() {
     });
 });
 
-gulp.task('img-min', function() {
-    return gulp.src(dirDev)
-        .pipe(imagemin())
-        .pipe(gulp.dest(dirProd));
+
+gulp.task('sassdev', function() {
+    return gulp.src(scssFiles)
+    .pipe(sass(sassDevOptions).on('error', sass.logError))
+    .pipe(gulp.dest(cssDest));
 });
 
 gulp.task('css-min', function() {
